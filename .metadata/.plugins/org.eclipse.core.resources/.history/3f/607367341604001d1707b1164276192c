@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="1df69d23-0f7b-42e9-aed3-91f91e433854" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="6ba0ca17-b5da-49ba-8db4-1e4621a84bd1" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="root123" database="ezypayment_dev_aurora" />
+	</db:config>
+	<flow name="s-sg-payment-gateway-apiFlow" doc:id="148c6446-ca06-4caa-817a-2bcee198f16c" >
+		<http:listener doc:name="Listener" doc:id="ce494ef1-b782-4dd8-b76e-0c9c6385d82a" config-ref="HTTP_Listener_config" path="/"/>
+		<db:select doc:id="3ca678fc-25cf-4a1b-8b06-4209af36b760" config-ref="Database_Config">
+			<db:sql ><![CDATA[Select * from ezypayment_dev_aurora.master_mid]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="a2fef922-3cde-4359-b0c8-8d870ee8802e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="addea05f-f728-456f-b7f9-e2370752d683" />
+	</flow>
+</mule>

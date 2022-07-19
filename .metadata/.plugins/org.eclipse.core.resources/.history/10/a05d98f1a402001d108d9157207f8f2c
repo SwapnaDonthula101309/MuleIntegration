@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="s-sg-configuration-db-test-suite.xml" />
+	<munit:test name="s-sg-configuration-db-test-suite-s-sg-configuration-db-apiFlowTest" doc:id="27ceac5e-ca7c-494c-8b2d-d4f23871de98" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to s-sg-configuration-db-apiFlow" doc:id="d0f2d1cf-61ae-41f0-92ef-71c1fdb30a1d" name="s-sg-configuration-db-apiFlow"/>
+		</munit:execution>
+	</munit:test>
+
+
+</mule>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd 
+          http://www.springframework.org/schema/beans
+	  http://www.springframework.org/schema/beans/spring-beans-current.xsd
+          http://www.mulesoft.org/schema/mule/core
+	  http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+          http://www.mulesoft.org/schema/mule/sftp
+	  http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+
+    <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="710aa3f2-420d-4cb6-93c8-8672d155eff6" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<!--  <flow name="sftpconnectorFlow" doc:id="48714fc4-4ee1-4aee-b9c3-2260d24c10f0" >
+		<scheduler doc:name="Scheduler" doc:id="a62131fa-05c6-4cc3-a81a-ad2e8388c206" >
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</scheduler>
+		<set-payload value="#['US']" doc:name="Set Payload" doc:id="55d81ff0-0c0e-4ba3-ad01-76610614e12a" />
+		<choice doc:name="Choice" doc:id="583794a7-3651-4f35-80ea-cb391191049d" >
+			<when expression="#[payload == 'US']"/>
+		</choice>
+		<set-payload value="#[[1,2,3,4,5,6]]" doc:name="[1,2,3,4,5,6]" doc:id="f6372c70-d3d9-43a5-8191-e2683048e80c" />
+		<batch:job jobName="sftpconnectorBatch_Job" doc:id="63d41a78-d902-4440-9b77-ed1209197681" >
+			<batch:process-records >
+				<batch:step name="Batch_Step" doc:id="728ae602-6762-4cae-9505-33cbf4469c46" acceptExpression="#[(payload mod 2) == 0]">
+					<ee:transform doc:name="Transform Message" doc:id="94bfb733-a493-4ee0-a7a0-f04365a8142b" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+-&#45;&#45;
+payload * 10]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+					<batch:aggregator doc:name="Batch Aggregator" doc:id="432a763b-3e01-431a-999e-010acbd485b0" size="2">
+						<logger level="INFO" doc:name="Logger" doc:id="b099ae20-82f8-4256-9f76-7d66df8c7827" message="#[payload]"/>
+					</batch:aggregator>
+				</batch:step>
+			</batch:process-records>
+		</batch:job>
+	</flow> -->
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="29266bd7-8a2d-4f27-b773-315b6f9ffeee" basePath="/child" >
+		<http:request-connection host="localhost" port="8082" />
+	</http:request-config>
+	<flow name="knownHostsInConnector">
+        <http:listener doc:name="Listener" doc:id="a3292992-e631-47f7-9aaf-8765e80553bb" config-ref="HTTP_Listener_config" path="/foreach"/>
+		<try doc:name="Try" doc:id="3481825d-89da-442d-a95a-bacadadeb1d4" >
+			<validation:is-null doc:id="d9d210d8-42f8-4e19-8410-09fa61a8aeb9" value="payload" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="8affdcf1-b433-456a-bd5e-e649be6497aa" >
+					<set-payload value='#["Error - Try scope"]' doc:name="Error - Try scope" doc:id="3647e07a-73e1-42ae-bc09-454ea74e0bc4" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<set-payload value='#["Success - main flow"]' doc:name="Set Payload" doc:id="c9d63d58-cf5a-49e9-98c3-fc1abc8f4c7a" />
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="7cd72463-b772-492e-8e63-e0faeead1cd4" >
+				<set-payload value='#["Error - main flow"]' doc:name="Error - main flow" doc:id="674654c9-e95f-472d-9d79-81faca0d065a" />
+			</on-error-continue>
+		</error-handler>
+    
+</flow>
+	<flow name="child" doc:id="a550166a-0bf8-4357-b0cd-e3898973ddcf" >
+		<http:listener doc:name="Listener" doc:id="3d7ed031-5c3f-4708-b5ce-206395be618d" config-ref="HTTP_Listener_config" path="/child"/>
+		<logger level="INFO" doc:name="Logger" doc:id="9aed97c6-d8f2-4765-9a2a-aef0c0297416" message="payload"/>
+	</flow> 
+
+</mule>

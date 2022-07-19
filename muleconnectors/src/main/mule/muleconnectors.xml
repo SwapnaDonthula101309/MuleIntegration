@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="47f1cd04-9496-47f7-ae75-588c02553e03" basePath="/api/" >
+		<http:listener-connection host="0.0.0.0" port="8083" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="06c2398b-58e9-4f16-9a68-5ddb090dc26b" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="root@123" database="employeedetails" />
+	</db:config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="40fc90de-363e-4801-8608-03b2b8baf4d7" />
+	<flow name="muleconnectorsFlow" doc:id="f1f41e12-45d5-4356-a083-e89082f4f114" >
+		<http:listener doc:name="Listener" doc:id="42f14835-46ad-463e-971b-23fcb622fcc6" config-ref="HTTP_Listener_config" path="/connectors"/>
+		<!-- <db:execute-ddl doc:id="bfac6671-ed5f-445c-bad4-eebe2764f410" config-ref="Database_Config">
+			<db:sql ><![CDATA[CREATE TABLE employeeDepartment (employeNo int, employeeName varchar(45), departmentId int, departmentName varchar(45));]]></db:sql>
+		</db:execute-ddl>  -->
+		<scatter-gather doc:name="Scatter-Gather" doc:id="0645c9a2-3aa7-4a39-83fc-9ede9d2dac9c" >
+			<route >
+				<file:read doc:id="fc602b2c-06e2-4fb3-80f7-d378b6dddf23" config-ref="File_Config" path="C:\Users\sswapna\Desktop\employeeDepartment.csv" />
+				<db:bulk-insert doc:name="Bulk insert" doc:id="87e23b12-f24a-4202-9cfb-f49b723e1992" config-ref="Database_Config">
+			<db:sql><![CDATA[Insert into employeedetails.employee (employeNo, employeeName, employeeAge, employeeDepartment, employeeSalary, employeeDesignation) values (:employeNo, :employeeName, :employeeAge, :employeeDepartment, employeeSalary, employeeDesignation)]]></db:sql>
+		</db:bulk-insert>
+				<logger level="INFO" doc:name="Logger" doc:id="3733b009-20d3-4d68-b22d-4c4d016ddebb" message="Payload of Bulk insert after completing insertion"/>
+			</route>
+			<route >
+				<db:select doc:name="Select" doc:id="01c1e279-bc21-4bdc-8306-996e17288120" config-ref="Database_Config">
+			<db:sql><![CDATA[Select * from employeedepartment]]></db:sql>
+		</db:select>
+				<ee:transform doc:name="Transform Message" doc:id="ebdc0c0c-a4ea-4c6f-8035-61d5e47db1c7">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			</route>
+			<route >
+				<ee:transform doc:name="Transform Message" doc:id="cd666425-59ce-424f-a34d-7c1929ea7a44" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</route>
+			<route >
+				<flow-ref doc:name="Flow Reference" doc:id="77f9aa5e-ff79-452e-b56e-50b5dee9ca17" name="accountinformation-main"/>
+			</route>
+		</scatter-gather>
+		<logger level="INFO" doc:name="Logger" doc:id="f2a9281a-a783-4f64-958f-36aed9ff2a8d" message="#[payload]"/>  
+	</flow>
+</mule>

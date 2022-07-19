@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0ccc56c1-3140-4285-8965-317607b3fd21">
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<flow name="dataweaveexampleFlow" doc:id="06947e0e-5106-479d-bc97-26ecd3892c1a" >
+		<http:listener doc:name="Flight" doc:id="579a0144-957d-4b25-9e27-dbbb45aacc0b" config-ref="HTTP_Listener_config" path="/api/flights">
+		<http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            </http:listener>
+	<set-payload value="#['Before']" doc:name="Set Payload" doc:id="f90f356c-98ce-4194-885f-e8d8cf89fe1d" />
+		<!-- <choice doc:name="Choice" doc:id="a57acc2c-9e39-4b37-a4db-ae0aca049a94" >
+			<when expression="#[not isEmpty(payload)]">
+				<set-payload value="#['US']" doc:name="Set Payload" doc:id="ffb44e99-7adf-4c5d-befd-b5bb6569a95d" />
+			</when>
+			<when expression="#[payload is String]">
+				<set-payload value="#['EU']" doc:name="Set Payload" doc:id="EU" />
+			</when>
+			<otherwise>
+				<logger level="INFO" doc:name="Logger" doc:id="ea6b2785-1ff0-4377-90cc-2e03314a0fdf" message="#[payload]"/>
+			</otherwise>
+		</choice>  -->
+		<validation:is-null doc:name="Is null" doc:id="73373d2b-9938-430e-bc87-0b94a0985018" value="#[payload]"/>
+		<set-payload value="#['After']" doc:name="Set Payload" doc:id="d4f0d137-7757-4e00-b2a7-68e421ed0fc9" />
+		<logger level="INFO" doc:name="Logger" doc:id="620fe89d-a6f8-4137-9bde-97faa6e2a2e3" message="Done"/>
+	</flow>
+</mule>

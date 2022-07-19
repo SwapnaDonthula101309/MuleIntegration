@@ -1,0 +1,30 @@
+#%RAML 1.0
+title: AccountInformation
+
+/accounts:
+  /account:
+    post:
+      body:
+        application/json:
+          type: array
+          example:
+            [{
+            'employeeName' : 'Swapna',
+            'employeNo.' : 1001,
+            'employeeAge' : 36,
+            'employeeDesignation' : 'Team Lead',
+            'employeeDepartment' : 'IT',
+            'employeeSalary' : 15000
+            },
+            {
+            "employeeNo" : "543",
+            "employeeName" : "Muthyam",
+            "employeeAge" : 34,
+            "employeeDesignation" : "DBA",
+            "employeeDepartment" : "Salesforce",
+            "employeeSalary" : 10000
+    
+  }]
+
+
+

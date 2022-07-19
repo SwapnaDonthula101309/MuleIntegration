@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd 
+          http://www.springframework.org/schema/beans
+	  http://www.springframework.org/schema/beans/spring-beans-current.xsd
+          http://www.mulesoft.org/schema/mule/core
+	  http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+          http://www.mulesoft.org/schema/mule/sftp
+	  http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+    <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="710aa3f2-420d-4cb6-93c8-8672d155eff6" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<flow name="sftpconnectorFlow" doc:id="48714fc4-4ee1-4aee-b9c3-2260d24c10f0" >
+		<scheduler doc:name="Scheduler" doc:id="a62131fa-05c6-4cc3-a81a-ad2e8388c206" >
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</scheduler>
+		<set-payload value="#[[1,2,3,4,5,6]]" doc:name="Set Payload" doc:id="f6372c70-d3d9-43a5-8191-e2683048e80c" />
+		<batch:job jobName="sftpconnectorBatch_Job" doc:id="63d41a78-d902-4440-9b77-ed1209197681" >
+			<batch:process-records >
+				<batch:step name="Batch_Step" doc:id="728ae602-6762-4cae-9505-33cbf4469c46" >
+					<ee:transform doc:name="Transform Message" doc:id="94bfb733-a493-4ee0-a7a0-f04365a8142b" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload * 10]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+					<batch:aggregator doc:name="Batch Aggregator" doc:id="432a763b-3e01-431a-999e-010acbd485b0" size="2">
+						<logger level="INFO" doc:name="Logger" doc:id="b099ae20-82f8-4256-9f76-7d66df8c7827" message="#[payload]"/>
+					</batch:aggregator>
+				</batch:step>
+			</batch:process-records>
+		</batch:job>
+	</flow>
+	<!-- <flow name="knownHostsInConnector">
+        <http:listener doc:name="Listener" doc:id="a3292992-e631-47f7-9aaf-8765e80553bb" config-ref="HTTP_Listener_config" path="/foreach"/>
+		<set-payload value="#[[1,2,3,4]]" doc:name="Set Payload" doc:id="c9d63d58-cf5a-49e9-98c3-fc1abc8f4c7a" />
+		<foreach doc:name="For Each" doc:id="b679a31c-a08d-482e-996c-428af3d000e6">
+			<set-payload value="#['order' ++ payload]" doc:name="Set Payload" doc:id="7a06537b-74f6-4aab-8ca7-a3c1c1cf9dea" />
+		</foreach>
+		<logger level="INFO" doc:name="Logger" doc:id="5f79df38-c2b7-4c78-a352-75ab64da492b" message="#[payload]"/>
+    
+</flow>  -->
+</mule>

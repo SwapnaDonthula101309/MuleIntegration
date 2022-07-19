@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:spring="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd 
+          http://www.springframework.org/schema/beans
+	  http://www.springframework.org/schema/beans/spring-beans-current.xsd
+          http://www.mulesoft.org/schema/mule/core
+	  http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+          http://www.mulesoft.org/schema/mule/sftp
+	  http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+
+    <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="710aa3f2-420d-4cb6-93c8-8672d155eff6" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<flow name="knownHostsInConnector">
+        <http:listener doc:name="Listener" doc:id="a3292992-e631-47f7-9aaf-8765e80553bb" config-ref="HTTP_Listener_config" path="/foreach"/>
+		<set-payload value="[1,2,3,4]" doc:name="Set Payload" doc:id="c9d63d58-cf5a-49e9-98c3-fc1abc8f4c7a" />
+		<foreach doc:name="For Each" doc:id="b679a31c-a08d-482e-996c-428af3d000e6" >
+			<set-payload value='#["order" + payload]' doc:name="Set Payload" doc:id="7a06537b-74f6-4aab-8ca7-a3c1c1cf9dea" />
+		</foreach>
+		<logger level="INFO" doc:name="Logger" doc:id="5f79df38-c2b7-4c78-a352-75ab64da492b" message="#[payload]"/>
+    
+</flow>
+</mule>

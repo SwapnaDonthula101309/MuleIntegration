@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.mule.tooling.runtime.muleServerLaunchType">
+    <stringAttribute key="launch_mule_server_version" value="org.mule.tooling.server.4.4.0.ee"/>
+    <stringAttribute key="mule-agent-port" value="52080"/>
+    <stringAttribute key="mule-agent-token-auth" value="fc3238f4-8059-4136-acf9-fd7164623b72"/>
+    <listAttribute key="mule-project-names">
+        <listEntry value="sftpconnector"/>
+    </listAttribute>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="sftpconnector"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-M-XX:-UseBiasedLocking -M-Dfile.encoding=UTF-8 -M-XX:+UseG1GC -M-XX:+UseStringDeduplication"/>
+</launchConfiguration>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="installedFeatures">
+		<item value="org.eclipse.draw2d:3.10.100.201606061308"/>
+		<item value="org.eclipse.egit.gitflow.feature:6.1.0.202203080745-r"/>
+		<item value="org.eclipse.egit.source:6.1.0.202203080745-r"/>
+		<item value="org.eclipse.egit:6.1.0.202203080745-r"/>
+		<item value="org.eclipse.emf.common:2.23.0.v20210618-0700"/>
+		<item value="org.eclipse.emf.ecore:2.25.0.v20210816-0937"/>
+		<item value="org.eclipse.gef:3.11.0.201606061308"/>
+		<item value="org.eclipse.help:2.3.700.v20210906-0500"/>
+		<item value="org.eclipse.jdt:3.18.900.v20210906-0500"/>
+		<item value="org.eclipse.jgit.gpg.bc:6.1.0.202203080745-r"/>
+		<item value="org.eclipse.jgit.http.apache:6.1.0.202203080745-r"/>
+		<item value="org.eclipse.jgit.ssh.apache:6.1.0.202203080745-r"/>
+		<item value="org.eclipse.jgit:6.1.0.202203080745-r"/>
+		<item value="org.eclipse.platform:4.21.0.v20210906-0842"/>
+		<item value="org.eclipse.rcp:4.21.0.v20210906-0842"/>
+		<item value="org.eclipse.wst.xml_ui.feature:3.23.0.v202107101937"/>
+		<item value="org.eclipse.xsd.edit:2.13.0.v20200723-0820"/>
+		<item value="org.eclipse.xsd:2.19.0.v20210617-1750"/>
+		<item value="org.mule.apieditor:3.2.0"/>
+		<item value="org.mule.tooling.extension.server.4.4.0.ee:7.11.0.202203290350"/>
+		<item value="org.mule.tooling.munit.extension:2.7.7.202203081527"/>
+		<item value="org.mule.tooling.studio:7.12.1.202205101558"/>
+		<item value="org.mule.tooling:7.12.1.202205101558"/>
+	</list>
+	<section name="org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog">
+		<item key="ShowStatusLine" value="true"/>
+		<item key="History" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;&#x0A;&lt;History&gt;&#x0D;&#x0A;&lt;historyRootNode&gt;&#x0D;&#x0A;&lt;infoNode path=&quot;/s-sg-configuration-db-api/src/main/resources/api/dev-app-config.properties&quot; type=&quot;1&quot;/&gt;&#x0D;&#x0A;&lt;/historyRootNode&gt;&#x0D;&#x0A;&lt;/History&gt;"/>
+		<item key="ShowDerived" value="false"/>
+		<item key="FilterByLocation" value="false"/>
+		<item key="WorkingSet" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#x0D;&#x0A;&lt;workingSet workingSetName=&quot;&quot;/&gt;"/>
+		<section name="DialogBoundsSettings">
+			<item key="DIALOG_HEIGHT" value="500"/>
+			<item key="DIALOG_WIDTH" value="600"/>
+			<item key="DIALOG_X_ORIGIN" value="12"/>
+			<item key="DIALOG_Y_ORIGIN" value="-21"/>
+			<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+		</section>
+	</section>
+</section>
